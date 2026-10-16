@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#312e81">
+<title>Absensi Online XI MIPA 7</title>
+<style>
+:root{
+  --ink:#1e1b4b; --muted:#64748b; --line:#e2e8f0; --bg:#eef2ff; --card:#ffffff;
+  --brand1:#0d9488; --brand2:#4338ca;
+  --ok:#16a34a; --izin:#d97706; --sakit:#dc2626;
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--bg); color:var(--ink); min-height:100vh; line-height:1.45;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.hero{
+  background:linear-gradient(135deg,#312e81 0%,#4338ca 45%,#0d9488 100%);
+  color:#fff; padding:calc(22px + env(safe-area-inset-top)) 18px 70px; position:relative; overflow:hidden;
+}
+.hero::before,.hero::after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.08)}
+.hero::before{width:220px;height:220px;right:-60px;top:-70px}
+.hero::after{width:140px;height:140px;left:-40px;bottom:-60px}
+.hero-inner{max-width:560px;margin:0 auto;position:relative;z-index:1}
+.school{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;opacity:.85}
+.hero h1{margin:.2rem 0 .1rem;font-size:1.7rem;line-height:1.15}
+.hero .sub{opacity:.9;font-size:.9rem}
+.clock{
+  margin-top:16px;display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.25);border-radius:16px;padding:10px 14px;backdrop-filter:blur(4px);
+}
+.clock .time{font-size:1.7rem;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.clock .date{font-size:.85rem;opacity:.95}
+main{max-width:560px;margin:-48px auto 40px;padding:0 14px;position:relative;z-index:2}
+.tabs{display:flex;background:#fff;border-radius:999px;padding:5px;box-shadow:0 8px 24px rgba(49,46,129,.15);margin-bottom:14px}
+.tab{flex:1;border:0;background:transparent;padding:11px 8px;border-radius:999px;font-weight:700;font-size:.92rem;color:var(--muted);cursor:pointer}
+.tab.active{background:linear-gradient(135deg,var(--brand2),var(--brand1));color:#fff;box-shadow:0 4px 12px rgba(67,56,202,.35)}
+.card{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:0 10px 30px rgba(49,46,129,.10);margin-bottom:14px}
+.card h2{margin:0 0 12px;font-size:1.05rem}
+label.lbl{display:block;font-weight:600;font-size:.88rem;margin:0 0 6px}
+input[type=text],input[type=password],input[type=date],textarea{
+  width:100%;padding:13px 14px;border:2px solid var(--line);border-radius:12px;font-size:1rem;font-family:inherit;color:var(--ink);background:#fff;outline:none;
+}
+input:focus,textarea:focus{border-color:var(--brand2);box-shadow:0 0 0 4px rgba(67,56,202,.12)}
+textarea{resize:vertical;min-height:64px}
+.field{margin-bottom:14px}
+.status{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.status input{position:absolute;opacity:0;pointer-events:none}
+.status label{
+  text-align:center;padding:12px 6px;border:2px solid var(--line);border-radius:12px;font-weight:700;cursor:pointer;font-size:.95rem;background:#fff;
+}
+.status input:checked + label.h{background:#dcfce7;border-color:var(--ok);color:#166534}
+.status input:checked + label.i{background:#fef3c7;border-color:var(--izin);color:#92400e}
+.status input:checked + label.s{background:#fee2e2;border-color:var(--sakit);color:#991b1b}
+.camera{background:#0f172a;border-radius:16px;overflow:hidden;position:relative;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;color:#cbd5e1}
+.camera video,.camera img{width:100%;height:100%;object-fit:cover;display:block}
+.camera video{transform:scaleX(-1)}
+.camera .ph{text-align:center;padding:20px;font-size:.92rem}
+.camera .ph svg{width:64px;height:64px;opacity:.6;margin-bottom:8px}
+.oval{position:absolute;inset:12% 18%;border:3px dashed rgba(255,255,255,.7);border-radius:50%;pointer-events:none}
+.row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.btn{
+  border:0;border-radius:12px;padding:13px 16px;font-weight:700;font-size:.98rem;cursor:pointer;font-family:inherit;
+  background:#e0e7ff;color:#3730a3;flex:1;min-width:120px;
+}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:linear-gradient(135deg,var(--brand2),var(--brand1));color:#fff;box-shadow:0 8px 18px rgba(67,56,202,.30)}
+.btn.big{width:100%;padding:16px;font-size:1.05rem;margin-top:4px}
+.btn.green{background:#16a34a;color:#fff}
+.btn.danger{background:#fee2e2;color:#991b1b}
+.btn[disabled]{opacity:.55;pointer-events:none}
+.hint{font-size:.8rem;color:var(--muted);margin-top:6px}
+.msg{border-radius:12px;padding:12px 14px;font-size:.92rem;margin-bottom:12px}
+.msg.err{background:#fee2e2;color:#991b1b}
+.msg.warn{background:#fef3c7;color:#92400e}
+.msg.info{background:#e0f2fe;color:#075985}
+.success{text-align:center;padding:26px 18px}
+.success .check{width:84px;height:84px;border-radius:50%;background:#dcfce7;color:#16a34a;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;animation:pop .45s ease}
+.success .check svg{width:46px;height:46px}
+@keyframes pop{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+.success h2{margin:0 0 4px;font-size:1.3rem}
+.recap{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:12px 14px;text-align:left;margin:14px 0;font-size:.95rem}
+.recap div{display:flex;justify-content:space-between;gap:10px;padding:4px 0}
+.recap span:first-child{color:var(--muted)}
+.recap span:last-child{font-weight:700;text-align:right}
+.hidden{display:none!important}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.stat{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:10px 4px;text-align:center}
+.stat b{display:block;font-size:1.4rem}
+.stat small{color:var(--muted);font-size:.72rem}
+.stat.h b{color:var(--ok)}.stat.i b{color:var(--izin)}.stat.s b{color:var(--sakit)}
+.dates{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.item{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:8px;background:#fff}
+.item img{width:54px;height:72px;object-fit:cover;border-radius:10px;background:#e2e8f0;cursor:pointer;flex:none}
+.item .nm{font-weight:700;font-size:.98rem;word-break:break-word}
+.item .mt{font-size:.78rem;color:var(--muted)}
+.item .grow{flex:1;min-width:0}
+.badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:.72rem;font-weight:700;margin-right:6px}
+.badge.Hadir{background:#dcfce7;color:#166534}.badge.Izin{background:#fef3c7;color:#92400e}.badge.Sakit{background:#fee2e2;color:#991b1b}
+.x{border:0;background:#fee2e2;color:#991b1b;border-radius:10px;width:34px;height:34px;font-size:1rem;cursor:pointer;flex:none}
+.empty{text-align:center;color:var(--muted);padding:22px 8px;font-size:.92rem}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.85);display:flex;align-items:center;justify-content:center;z-index:50;padding:20px}
+.modal img{max-width:100%;max-height:90vh;border-radius:14px}
+footer{text-align:center;color:var(--muted);font-size:.78rem;padding:0 14px 26px}
+.spin{display:inline-block;width:16px;height:16px;border:3px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:sp .8s linear infinite;vertical-align:-3px;margin-right:6px}
+@keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="school" id="schoolName">SMA Negeri 1 Raya</div>
+    <h1>Absensi Online <span id="kelasName">XI MIPA 7</span></h1>
+    <div class="sub">Tahun Ajaran <span id="tahunName">2026/2027</span></div>
+    <div class="clock">
+      <div>
+        <div class="time" id="clockTime">--:--:--</div>
+        <div class="date" id="clockDate">memuat tanggal…</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="tabs" role="tablist">
+    <button class="tab active" id="tabSiswa" role="tab">📝 Absen Siswa</button>
+    <button class="tab" id="tabGuru" role="tab">🔐 Panel Guru</button>
+  </div>
+
+  <!-- ===== HALAMAN SISWA ===== -->
+  <section id="pageSiswa">
+    <div id="demoBanner" class="msg warn hidden">
+      <b>Mode demo.</b> Data hanya tersimpan di perangkat ini. Agar semua siswa tercatat bersama, sambungkan ke Google Sheets (lihat PANDUAN.md).
+    </div>
+
+    <div id="formWrap">
+      <div class="card">
+        <h2>1. Isi data</h2>
+        <div class="field">
+          <label class="lbl" for="nama">Nama lengkap</label>
+          <input type="text" id="nama" placeholder="Ketik nama kamu" autocomplete="name" maxlength="60" list="daftarSiswa">
+          <datalist id="daftarSiswa"></datalist>
+        </div>
+        <div class="field">
+          <label class="lbl">Status kehadiran</label>
+          <div class="status">
+            <input type="radio" name="status" id="sH" value="Hadir" checked><label class="h" for="sH">✅ Hadir</label>
+            <input type="radio" name="status" id="sI" value="Izin"><label class="i" for="sI">📄 Izin</label>
+            <input type="radio" name="status" id="sS" value="Sakit"><label class="s" for="sS">🤒 Sakit</label>
+          </div>
+        </div>
+        <div class="field" id="ketWrap" style="display:none;margin-bottom:0">
+          <label class="lbl" for="ket">Keterangan (boleh dikosongkan)</label>
+          <textarea id="ket" maxlength="120" placeholder="Contoh: acara keluarga / demam"></textarea>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>2. Foto wajah</h2>
+        <div class="camera" id="camBox">
+          <div class="ph" id="camPh">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <div>Kamera belum aktif.<br>Tekan tombol di bawah, lalu izinkan akses kamera.</div>
+          </div>
+          <video id="video" playsinline muted autoplay class="hidden"></video>
+          <img id="preview" class="hidden" alt="Hasil foto">
+          <div class="oval hidden" id="oval"></div>
+        </div>
+        <div id="camMsg"></div>
+        <div class="row">
+          <button class="btn" id="btnOpen">📷 Buka Kamera</button>
+          <button class="btn primary hidden" id="btnShot">📸 Ambil Foto</button>
+          <button class="btn hidden" id="btnRetake">🔄 Foto Ulang</button>
+        </div>
+        <div class="row" style="margin-top:6px">
+          <label class="btn" style="text-align:center;cursor:pointer;display:block;font-size:.85rem;padding:10px" for="fileCam">
+            Kamera tidak mau menyala? Pakai kamera bawaan HP
+          </label>
+          <input type="file" id="fileCam" accept="image/*" capture="user" class="hidden">
+        </div>
+        <div class="hint">Wajah harus terlihat jelas. Tanggal dan jam otomatis tercetak di foto.</div>
+      </div>
+
+      <div id="errBox"></div>
+      <button class="btn primary big" id="btnKirim">Kirim Absensi</button>
+      <div class="hint" style="text-align:center;margin-top:8px">Tanggal &amp; jam dicatat otomatis oleh sistem saat dikirim.</div>
+    </div>
+
+    <div id="doneWrap" class="card success hidden">
+      <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <h2>Absensi berhasil!</h2>
+      <div style="color:var(--muted)">Terima kasih, datamu sudah tercatat.</div>
+      <div class="recap" id="recap"></div>
+      <button class="btn" id="btnLagi">Kembali ke formulir</button>
+    </div>
+  </section>
+
+  <!-- ===== HALAMAN GURU ===== -->
+  <section id="pageGuru" class="hidden">
+    <div id="loginWrap" class="card">
+      <h2>Masuk Wali Kelas</h2>
+      <div id="loginMsg"></div>
+      <div class="field">
+        <label class="lbl" for="pw">Kata sandi</label>
+        <input type="password" id="pw" placeholder="Kata sandi wali kelas" autocomplete="current-password">
+      </div>
+      <button class="btn primary big" id="btnLogin">Masuk</button>
+    </div>
+
+    <div id="panelWrap" class="hidden">
+      <div class="card">
+        <h2>Data absensi</h2>
+        <div class="dates">
+          <div><label class="lbl" for="dari">Dari tanggal</label><input type="date" id="dari"></div>
+          <div><label class="lbl" for="sampai">Sampai tanggal</label><input type="date" id="sampai"></div>
+        </div>
+        <div class="row">
+          <button class="btn primary" id="btnMuat">🔄 Muat Data</button>
+          <button class="btn green" id="btnExcel">⬇️ Unduh Excel</button>
+        </div>
+        <div class="hint">Foto ikut tertanam di file Excel. Pilih rentang pendek (mis. 1 minggu) agar cepat dimuat.</div>
+      </div>
+      <div class="card">
+        <div class="stats">
+          <div class="stat"><b id="stT">0</b><small>Total</small></div>
+          <div class="stat h"><b id="stH">0</b><small>Hadir</small></div>
+          <div class="stat i"><b id="stI">0</b><small>Izin</small></div>
+          <div class="stat s"><b id="stS">0</b><small>Sakit</small></div>
+        </div>
+        <input type="text" id="cari" placeholder="Cari nama…">
+        <div id="listMsg"></div>
+        <div class="list" id="list"></div>
+      </div>
+      <button class="btn danger big" id="btnKeluar">Keluar</button>
+    </div>
+  </section>
+</main>
+
+<footer>Absensi Online · <span id="ftKelas"></span> · Dibuat untuk wali kelas</footer>
+
+<div class="modal hidden" id="modal"><img id="modalImg" alt="Foto absensi"></div>
+
+<script>
+/* ====================== PENGATURAN (ubah di sini) ====================== */
+const CONFIG = {
+  // Tempel URL Web App dari Google Apps Script di antara tanda kutip.
+  // Kosongkan = mode demo (data hanya di perangkat ini).
+  APPS_SCRIPT_URL: "",
+  SEKOLAH: "SMA Negeri 1 Raya",
+  KELAS: "XI MIPA 7",
+  TAHUN: "2026/2027",
+  WALI_KELAS: "",                // opsional, tampil di file Excel
+  DAFTAR_SISWA: [],              // opsional, contoh: ["Ahmad Fauzi","Siti Aisyah"] -> nama muncul sebagai saran
+  KATA_SANDI_DEMO: "wali7mipa",  // hanya dipakai di mode demo
+  ZONA_WAKTU: "Asia/Jakarta"
+};
+/* ======================================================================= */
+
+const $ = (id) => document.getElementById(id);
+const DEMO = !CONFIG.APPS_SCRIPT_URL;
+const BULAN = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+const HARI = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+
+/* ---------- Waktu (zona Jakarta) ---------- */
+function partsNow(){
+  const f = new Intl.DateTimeFormat("en-GB",{timeZone:CONFIG.ZONA_WAKTU,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false,weekday:"long"});
+  const o = {}; f.formatToParts(new Date()).forEach(p => o[p.type] = p.value);
+  if (o.hour === "24") o.hour = "00";
+  return o;
+}
+function tickClock(){
+  const p = partsNow();
+  const idx = new Date(Date.UTC(+p.year,+p.month-1,+p.day)).getUTCDay();
+  $("clockTime").textContent = `${p.hour}:${p.minute}:${p.second} WIB`;
+  $("clockDate").textContent = `${HARI[idx]}, ${+p.day} ${BULAN[+p.month-1]} ${p.year}`;
+}
+function stampNow(){
+  const p = partsNow();
+  return { tanggal:`${p.day}/${p.month}/${p.year}`, jam:`${p.hour}:${p.minute}:${p.second}` };
+}
+
+/* ---------- Pengaturan tampilan awal ---------- */
+$("schoolName").textContent = CONFIG.SEKOLAH;
+$("kelasName").textContent = CONFIG.KELAS;
+$("tahunName").textContent = CONFIG.TAHUN;
+$("ftKelas").textContent = `${CONFIG.KELAS} ${CONFIG.SEKOLAH}`;
+document.title = `Absensi Online ${CONFIG.KELAS}`;
+if (DEMO) $("demoBanner").classList.remove("hidden");
+CONFIG.DAFTAR_SISWA.forEach(n => { const o = document.createElement("option"); o.value = n; $("daftarSiswa").appendChild(o); });
+tickClock(); setInterval(tickClock, 1000);
+
+/* ---------- Tab ---------- */
+function showTab(t){
+  const guru = t === "guru";
+  $("pageSiswa").classList.toggle("hidden", guru);
+  $("pageGuru").classList.toggle("hidden", !guru);
+  $("tabSiswa").classList.toggle("active", !guru);
+  $("tabGuru").classList.toggle("active", guru);
+  if (guru) stopCamera();
+}
+$("tabSiswa").onclick = () => showTab("siswa");
+$("tabGuru").onclick = () => showTab("guru");
+
+/* ---------- Status -> keterangan ---------- */
+document.querySelectorAll('input[name=status]').forEach(r => r.addEventListener("change", () => {
+  $("ketWrap").style.display = getStatus() === "Hadir" ? "none" : "block";
+}));
+function getStatus(){ return document.querySelector('input[name=status]:checked').value; }
+
+/* ---------- Kamera & foto ---------- */
+let stream = null, fotoData = null;
+const video = $("video"), preview = $("preview");
+
+function setCamUI(mode){ // idle | live | taken
+  $("camPh").classList.toggle("hidden", mode !== "idle");
+  video.classList.toggle("hidden", mode !== "live");
+  $("oval").classList.toggle("hidden", mode !== "live");
+  preview.classList.toggle("hidden", mode !== "taken");
+  $("btnOpen").classList.toggle("hidden", mode !== "idle");
+  $("btnShot").classList.toggle("hidden", mode !== "live");
+  $("btnRetake").classList.toggle("hidden", mode !== "taken");
+}
+function camMessage(text, type){ $("camMsg").innerHTML = text ? `<div class="msg ${type||"info"}" style="margin:10px 0 0">${text}</div>` : ""; }
+
+async function startCamera(){
+  camMessage("");
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    camMessage("Peramban ini tidak mendukung kamera langsung. Gunakan tombol <b>kamera bawaan HP</b> di bawah, atau buka tautan ini di Chrome/Safari.", "warn");
+    return;
+  }
+  try{
+    stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:"user",width:{ideal:960},height:{ideal:1280}},audio:false});
+    video.srcObject = stream;
+    await video.play().catch(()=>{});
+    setCamUI("live");
+  }catch(e){
+    const izin = e && (e.name === "NotAllowedError" || e.name === "PermissionDeniedError");
+    camMessage(izin
+      ? "Akses kamera ditolak. Izinkan kamera di pengaturan peramban, atau pakai tombol <b>kamera bawaan HP</b> di bawah."
+      : "Kamera tidak dapat dibuka. Pakai tombol <b>kamera bawaan HP</b> di bawah.", "warn");
+  }
+}
+function stopCamera(){
+  if (stream){ stream.getTracks().forEach(t => t.stop()); stream = null; }
+  video.srcObject = null;
+  if (!fotoData) setCamUI("idle");
+}
+function drawStamp(ctx, w, h){
+  const s = stampNow();
+  const text = `${s.tanggal}  ${s.jam} WIB`;
+  const fs = Math.max(11, Math.round(w * 0.045));
+  ctx.font = `700 ${fs}px system-ui,Arial,sans-serif`;
+  const pad = Math.round(fs * 0.5);
+  ctx.fillStyle = "rgba(0,0,0,.55)";
+  ctx.fillRect(0, h - fs - pad * 2, w, fs + pad * 2);
+  ctx.fillStyle = "#fff";
+  ctx.textBaseline = "middle";
+  ctx.fillText(text, pad, h - (fs + pad * 2) / 2);
+}
+function finalizeCanvas(canvas){
+  // kompres sampai cukup kecil untuk sel Google Sheets
+  let q = 0.72, data = canvas.toDataURL("image/jpeg", q);
+  while (data.length > 38000 && q > 0.3){ q -= 0.07; data = canvas.toDataURL("image/jpeg", q); }
+  fotoData = data;
+  preview.src = data;
+  stopCameraKeep();
+  setCamUI("taken");
+}
+function stopCameraKeep(){ if (stream){ stream.getTracks().forEach(t => t.stop()); stream = null; } video.srcObject = null; }
+function shoot(){
+  const vw = video.videoWidth, vh = video.videoHeight;
+  if (!vw || !vh){ camMessage("Kamera belum siap, tunggu sebentar lalu coba lagi.", "warn"); return; }
+  const W = 320, H = Math.round(W * 4 / 3);
+  const c = document.createElement("canvas"); c.width = W; c.height = H;
+  const ctx = c.getContext("2d");
+  // potong tengah ke rasio 3:4
+  const target = 3 / 4, srcR = vw / vh;
+  let sw, sh, sx, sy;
+  if (srcR > target){ sh = vh; sw = vh * target; sx = (vw - sw) / 2; sy = 0; }
+  else { sw = vw; sh = vw / target; sx = 0; sy = (vh - sh) / 2; }
+  ctx.drawImage(video, sx, sy, sw, sh, 0, 0, W, H);
+  drawStamp(ctx, W, H);
+  finalizeCanvas(c);
+}
+function fromFile(file){
+  if (!file) return;
+  const url = URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = () => {
+    const W = 320, H = Math.round(W * 4 / 3);
+    const c = document.createElement("canvas"); c.width = W; c.height = H;
+    const ctx = c.getContext("2d");
+    const target = 3 / 4, srcR = img.width / img.height;
+    let sw, sh, sx, sy;
+    if (srcR > target){ sh = img.height; sw = sh * target; sx = (img.width - sw) / 2; sy = 0; }
+    else { sw = img.width; sh = sw / target; sx = 0; sy = (img.height - sh) / 2; }
+    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, W, H);
+    drawStamp(ctx, W, H);
+    URL.revokeObjectURL(url);
+    camMessage("");
+    finalizeCanvas(c);
+  };
+  img.onerror = () => { URL.revokeObjectURL(url); camMessage("Foto tidak dapat dibaca, coba lagi.", "warn"); };
+  img.src = url;
+}
+function retake(){ fotoData = null; preview.removeAttribute("src"); setCamUI("idle"); startCamera(); }
+
+$("btnOpen").onclick = startCamera;
+$("btnShot").onclick = shoot;
+$("btnRetake").onclick = retake;
+$("fileCam").onchange = (e) => { fromFile(e.target.files[0]); e.target.value = ""; };
+
+/* ---------- API (online = Apps Script, demo = localStorage) ---------- */
+async function post(payload){
+  const r = await fetch(CONFIG.APPS_SCRIPT_URL, { method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload) });
+  if (!r.ok) throw new Error("Server menjawab " + r.status);
+  return r.json();
+}
+const DEMO_KEY = "absensi_demo_" + CONFIG.KELAS;
+const demoRows = () => { try{ return JSON.parse(localStorage.getItem(DEMO_KEY) || "[]"); }catch(e){ return []; } };
+const tglNum = (dmy) => { const [d,m,y] = dmy.split("/"); return +(y + m + d); };
+
+const api = {
+  async absen(d){
+    if (!DEMO) return post({action:"absen", ...d});
+    const rows = demoRows(), s = stampNow();
+    if (rows.some(r => r.tanggal === s.tanggal && r.nama.toLowerCase() === d.nama.toLowerCase()))
+      return {ok:false, msg:"Kamu sudah absen hari ini."};
+    const row = {id:String(Date.now()), tanggal:s.tanggal, jam:s.jam, nama:d.nama, status:d.status, ket:d.ket||"", foto:d.foto};
+    rows.push(row);
+    try{ localStorage.setItem(DEMO_KEY, JSON.stringify(rows)); }
+    catch(e){ return {ok:false, msg:"Penyimpanan perangkat penuh (mode demo)."}; }
+    return {ok:true, data:row};
+  },
+  async list(d){
+    if (!DEMO) return post({action:"list", ...d});
+    if (d.password !== CONFIG.KATA_SANDI_DEMO) return {ok:false, msg:"Kata sandi salah."};
+    const a = d.dari ? +d.dari.replace(/-/g,"") : 0, b = d.sampai ? +d.sampai.replace(/-/g,"") : 99999999;
+    return {ok:true, rows: demoRows().filter(r => { const n = tglNum(r.tanggal); return n >= a && n <= b; })};
+  },
+  async hapus(d){
+    if (!DEMO) return post({action:"hapus", ...d});
+    if (d.password !== CONFIG.KATA_SANDI_DEMO) return {ok:false, msg:"Kata sandi salah."};
+    localStorage.setItem(DEMO_KEY, JSON.stringify(demoRows().filter(r => r.id !== d.id)));
+    return {ok:true};
+  }
+};
+
+/* ---------- Kirim absensi ---------- */
+function showErr(t){ $("errBox").innerHTML = t ? `<div class="msg err">${esc(t)}</div>` : ""; }
+function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+$("btnKirim").onclick = async () => {
+  showErr("");
+  const nama = $("nama").value.replace(/\s+/g," ").trim();
+  if (nama.length < 3) return showErr("Isi nama lengkap terlebih dahulu (minimal 3 huruf).");
+  if (!fotoData) return showErr("Ambil foto wajah terlebih dahulu.");
+  const btn = $("btnKirim"); btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Mengirim…';
+  try{
+    const res = await api.absen({nama, status:getStatus(), ket:$("ket").value.trim(), foto:fotoData});
+    if (!res.ok) throw new Error(res.msg || "Gagal mengirim.");
+    const d = res.data;
+    $("recap").innerHTML =
+      `<div><span>Nama</span><span>${esc(d.nama)}</span></div>` +
+      `<div><span>Status</span><span>${esc(d.status)}</span></div>` +
+      `<div><span>Tanggal</span><span>${esc(d.tanggal)}</span></div>` +
+      `<div><span>Jam</span><span>${esc(d.jam)} WIB</span></div>`;
+    $("formWrap").classList.add("hidden");
+    $("doneWrap").classList.remove("hidden");
+    window.scrollTo({top:0,behavior:"smooth"});
+  }catch(e){
+    showErr(e.message === "Failed to fetch" ? "Tidak ada koneksi internet. Coba lagi." : e.message);
+  }finally{
+    btn.disabled = false; btn.textContent = "Kirim Absensi";
+  }
+};
+$("btnLagi").onclick = () => {
+  fotoData = null; preview.removeAttribute("src"); setCamUI("idle");
+  $("nama").value = ""; $("ket").value = ""; camMessage("");
+  $("doneWrap").classList.add("hidden"); $("formWrap").classList.remove("hidden");
+};
+
+/* ---------- Panel guru ---------- */
+let pass = sessionStorage.getItem("absensi_pw") || "";
+let dataRows = [];
+const isoToday = () => { const p = partsNow(); return `${p.year}-${p.month}-${p.day}`; };
+$("dari").value = $("sampai").value = isoToday();
+
+async function muat(){
+  $("listMsg").innerHTML = '<div class="empty">Memuat data…</div>'; $("list").innerHTML = "";
+  try{
+    const res = await api.list({password:pass, dari:$("dari").value, sampai:$("sampai").value});
+    if (!res.ok){
+      if (/sandi/i.test(res.msg || "")) { keluar(); $("loginMsg").innerHTML = `<div class="msg err">${esc(res.msg)}</div>`; return; }
+      throw new Error(res.msg || "Gagal memuat data.");
+    }
+    dataRows = res.rows || [];
+    renderList();
+  }catch(e){
+    $("listMsg").innerHTML = `<div class="msg err">${esc(e.message)}</div>`;
+  }
+}
+function renderList(){
+  const q = $("cari").value.trim().toLowerCase();
+  const rows = dataRows.filter(r => !q || r.nama.toLowerCase().includes(q));
+  const c = s => dataRows.filter(r => r.status === s).length;
+  $("stT").textContent = dataRows.length; $("stH").textContent = c("Hadir"); $("stI").textContent = c("Izin"); $("stS").textContent = c("Sakit");
+  $("listMsg").innerHTML = rows.length ? "" : '<div class="empty">Belum ada data pada rentang tanggal ini.</div>';
+  const list = $("list"); list.innerHTML = "";
+  rows.slice().reverse().forEach(r => {
+    const el = document.createElement("div"); el.className = "item";
+    el.innerHTML =
+      `<img alt="Foto" src="${r.foto ? esc(r.foto) : ""}">` +
+      `<div class="grow"><div class="nm">${esc(r.nama)}</div>` +
+      `<div class="mt"><span class="badge ${esc(r.status)}">${esc(r.status)}</span>${esc(r.tanggal)} · ${esc(r.jam)}</div>` +
+      (r.ket ? `<div class="mt">${esc(r.ket)}</div>` : "") + `</div>` +
+      `<button class="x" title="Hapus">🗑</button>`;
+    el.querySelector("img").onclick = () => { if (r.foto){ $("modalImg").src = r.foto; $("modal").classList.remove("hidden"); } };
+    el.querySelector(".x").onclick = async () => {
+      if (!confirm(`Hapus data absensi ${r.nama} (${r.tanggal} ${r.jam})?`)) return;
+      const res = await api.hapus({password:pass, id:r.id});
+      if (res.ok){ dataRows = dataRows.filter(x => x.id !== r.id); renderList(); } else alert(res.msg || "Gagal menghapus.");
+    };
+    list.appendChild(el);
+  });
+}
+$("cari").oninput = renderList;
+$("modal").onclick = () => $("modal").classList.add("hidden");
+$("btnMuat").onclick = muat;
+
+function masukPanel(){ $("loginWrap").classList.add("hidden"); $("panelWrap").classList.remove("hidden"); muat(); }
+function keluar(){ pass = ""; sessionStorage.removeItem("absensi_pw"); $("panelWrap").classList.add("hidden"); $("loginWrap").classList.remove("hidden"); $("pw").value = ""; }
+$("btnLogin").onclick = async () => {
+  const pw = $("pw").value; if (!pw) return;
+  const b = $("btnLogin"); b.disabled = true; b.innerHTML = '<span class="spin"></span>Memeriksa…';
+  try{
+    const res = await api.list({password:pw, dari:isoToday(), sampai:isoToday()});
+    if (!res.ok) throw new Error(res.msg || "Kata sandi salah.");
+    pass = pw; sessionStorage.setItem("absensi_pw", pw); $("loginMsg").innerHTML = "";
+    dataRows = res.rows || []; $("loginWrap").classList.add("hidden"); $("panelWrap").classList.remove("hidden"); renderList();
+  }catch(e){
+    $("loginMsg").innerHTML = `<div class="msg err">${esc(e.message === "Failed to fetch" ? "Tidak ada koneksi internet." : e.message)}</div>`;
+  }finally{ b.disabled = false; b.textContent = "Masuk"; }
+};
+$("pw").addEventListener("keydown", e => { if (e.key === "Enter") $("btnLogin").click(); });
+$("btnKeluar").onclick = keluar;
+if (pass) masukPanel();
+
+/* ---------- Unduh Excel (dengan foto) ---------- */
+function loadScript(src){
+  return new Promise((ok, no) => {
+    if (window.ExcelJS) return ok();
+    const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = () => no(new Error("Gagal memuat pustaka Excel. Periksa koneksi internet."));
+    document.head.appendChild(s);
+  });
+}
+function fmtTgl(iso){ if(!iso) return ""; const [y,m,d] = iso.split("-"); return `${d}/${m}/${y}`; }
+
+$("btnExcel").onclick = async () => {
+  if (!dataRows.length) return alert("Belum ada data untuk diunduh. Pilih tanggal lalu tekan Muat Data.");
+  const b = $("btnExcel"); b.disabled = true; b.innerHTML = '<span class="spin"></span>Menyusun…';
+  try{
+    await loadScript("https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js");
+    const wb = new ExcelJS.Workbook();
+    wb.creator = CONFIG.WALI_KELAS || ("Wali Kelas " + CONFIG.KELAS);
+    wb.created = new Date();
+    const ws = wb.addWorksheet("Absensi", {views:[{state:"frozen", ySplit:5}]});
+    ws.columns = [{width:6},{width:14},{width:12},{width:34},{width:12},{width:30},{width:14}];
+
+    const border = {top:{style:"thin",color:{argb:"FFCBD5E1"}},left:{style:"thin",color:{argb:"FFCBD5E1"}},bottom:{style:"thin",color:{argb:"FFCBD5E1"}},right:{style:"thin",color:{argb:"FFCBD5E1"}}};
+    ws.mergeCells("A1:G1"); ws.getCell("A1").value = "DAFTAR HADIR SISWA " + CONFIG.KELAS;
+    ws.getCell("A1").font = {bold:true,size:16,color:{argb:"FF312E81"}}; ws.getCell("A1").alignment = {horizontal:"center"};
+    ws.mergeCells("A2:G2"); ws.getCell("A2").value = CONFIG.SEKOLAH.toUpperCase() + " · TAHUN AJARAN " + CONFIG.TAHUN;
+    ws.getCell("A2").font = {bold:true,size:11}; ws.getCell("A2").alignment = {horizontal:"center"};
+    ws.mergeCells("A3:G3"); ws.getCell("A3").value = "Periode: " + fmtTgl($("dari").value) + " s.d. " + fmtTgl($("sampai").value) + (CONFIG.WALI_KELAS ? "   ·   Wali kelas: " + CONFIG.WALI_KELAS : "");
+    ws.getCell("A3").alignment = {horizontal:"center"}; ws.getCell("A3").font = {size:10,color:{argb:"FF64748B"}};
+
+    const head = ws.getRow(5);
+    ["No","Tanggal","Jam (WIB)","Nama Siswa","Status","Keterangan","Foto Wajah"].forEach((t,i) => {
+      const c = head.getCell(i+1); c.value = t;
+      c.font = {bold:true,color:{argb:"FFFFFFFF"}}; c.fill = {type:"pattern",pattern:"solid",fgColor:{argb:"FF4338CA"}};
+      c.alignment = {horizontal:"center",vertical:"middle"}; c.border = border;
+    });
+    head.height = 26;
+
+    const fillBy = {Hadir:"FFDCFCE7",Izin:"FFFEF3C7",Sakit:"FFFEE2E2"};
+    dataRows.forEach((r, i) => {
+      const rn = 6 + i, row = ws.getRow(rn);
+      row.values = [i+1, r.tanggal, r.jam, r.nama, r.status, r.ket || "", ""];
+      row.height = r.foto ? 90 : 22;
+      for (let c = 1; c <= 7; c++){
+        const cell = row.getCell(c); cell.border = border;
+        cell.alignment = {vertical:"middle", horizontal:(c === 4 || c === 6) ? "left" : "center", wrapText:true};
+      }
+      row.getCell(5).fill = {type:"pattern",pattern:"solid",fgColor:{argb:fillBy[r.status] || "FFFFFFFF"}};
+      row.getCell(5).font = {bold:true};
+      if (r.foto && r.foto.startsWith("data:image")){
+        const id = wb.addImage({base64:r.foto, extension:"jpeg"});
+        ws.addImage(id, {tl:{col:6.12,row:rn-1+0.06}, ext:{width:66,height:87}});
+      }
+    });
+    const last = 5 + dataRows.length;
+
+    // Rekap per siswa (rumus hidup)
+    const names = [...new Set(dataRows.map(r => r.nama))].sort((a,b) => a.localeCompare(b,"id"));
+    const rk = wb.addWorksheet("Rekap");
+    rk.columns = [{width:6},{width:34},{width:10},{width:10},{width:10},{width:10}];
+    rk.mergeCells("A1:F1"); rk.getCell("A1").value = "REKAP KEHADIRAN " + CONFIG.KELAS;
+    rk.getCell("A1").font = {bold:true,size:14,color:{argb:"FF312E81"}}; rk.getCell("A1").alignment = {horizontal:"center"};
+    const rh = rk.getRow(3);
+    ["No","Nama Siswa","Hadir","Izin","Sakit","Total"].forEach((t,i) => {
+      const c = rh.getCell(i+1); c.value = t; c.font = {bold:true,color:{argb:"FFFFFFFF"}};
+      c.fill = {type:"pattern",pattern:"solid",fgColor:{argb:"FF0D9488"}}; c.alignment = {horizontal:"center"}; c.border = border;
+    });
+    names.forEach((n, i) => {
+      const r = 4 + i, row = rk.getRow(r);
+      const cnt = s => ({formula:`COUNTIFS(Absensi!$D$6:$D$${last},$B${r},Absensi!$E$6:$E$${last},"${s}")`});
+      row.getCell(1).value = i+1; row.getCell(2).value = n;
+      row.getCell(3).value = cnt("Hadir"); row.getCell(4).value = cnt("Izin"); row.getCell(5).value = cnt("Sakit");
+      row.getCell(6).value = {formula:`SUM(C${r}:E${r})`};
+      for (let c = 1; c <= 6; c++){ const cell = row.getCell(c); cell.border = border; cell.alignment = {horizontal: c === 2 ? "left" : "center"}; }
+    });
+
+    const buf = await wb.xlsx.writeBuffer();
+    const blob = new Blob([buf], {type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `Absensi_${CONFIG.KELAS.replace(/\s+/g,"-")}_${isoToday()}.xlsx`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  }catch(e){
+    alert(e.message || "Gagal membuat file Excel.");
+  }finally{
+    b.disabled = false; b.textContent = "⬇️ Unduh Excel";
+  }
+};
+
+setCamUI("idle");
+</script>
+</body>
+</html>
